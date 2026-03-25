@@ -36,6 +36,8 @@
 *.exe
 *.out
 *.app
+OpenVGETest
+OpenVGE
 
 # debug information files
 *.dwo
