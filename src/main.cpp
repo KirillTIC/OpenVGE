@@ -9,10 +9,27 @@
 #include <iostream>
 
 int main() {
-    glfwInit();
+    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW with Wayland backend\n";
+        return 1;
+    }
+
+    if (glfwGetPlatform() != GLFW_PLATFORM_WAYLAND) {
+        std::cerr << "GLFW did not select the Wayland platform\n";
+        glfwTerminate();
+        return 1;
+    }
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     GLFWwindow* window = glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create a Wayland window\n";
+        glfwTerminate();
+        return 1;
+    }
+
+    std::cout << "Running on Wayland\n";
 
     uint32_t extensionCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
@@ -33,4 +50,3 @@ int main() {
 
     return 0;
 }
-
